@@ -14,7 +14,10 @@ namespace TestTask.Services.Implementations
         }
         public async Task<Author> GetAuthor()
         {
-            return await _context.Authors.FirstOrDefaultAsync();
+            return await _context.Authors
+                            .OrderByDescending(a => a.Books.Max(b => b.Title.Length))
+                            //.OrderByDescending(a => a.Id)
+                            .FirstOrDefaultAsync();
         }
         public async Task<List<Author>> GetAuthors()
         {
