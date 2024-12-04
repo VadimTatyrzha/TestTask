@@ -13,8 +13,7 @@ namespace TestTask.Services.Implementations
             _context = dbContext;
         }
         public async Task<Book> GetBook()
-        {
-            //var costOfPublishedEdition = 
+        { 
             return await _context.Books
                             .OrderByDescending(b => b.QuantityPublished * b.Price)
                             .FirstOrDefaultAsync();
@@ -26,7 +25,7 @@ namespace TestTask.Services.Implementations
             var keyWord = "red";
             return await _context.Books
                             .Where(b => b.PublishDate > carolusRexReleaseDate && 
-                                        b.Title.ToLower().Contains(keyWord))
+                                        b.Title.ToLower().Contains(keyWord.ToLower()))
                             .ToListAsync();
         }
     }
