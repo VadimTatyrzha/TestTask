@@ -15,14 +15,19 @@ namespace TestTask.Services.Implementations
         public async Task<Book> GetBook()
         {
             //var costOfPublishedEdition = 
-            return await _context.Books.OrderBy(b => b.QuantityPublished * b.Price).ElementAtOrDefaultAsync(1);
+            return await _context.Books
+                            .OrderByDescending(b => b.QuantityPublished * b.Price)
+                            .FirstOrDefaultAsync();
         }
         public async Task<List<Book>> GetBooks()
         {
             // Carolus Rex release date — 2012 may 25.
             var carolusRexReleaseDate = new DateTime(2012, 05, 25);
             var keyWord = "red";
-            return await _context.Books.Where(b => b.PublishDate > carolusRexReleaseDate && b.Title.ToLower().Contains(keyWord)).ToListAsync();
+            return await _context.Books
+                            .Where(b => b.PublishDate > carolusRexReleaseDate && 
+                                        b.Title.ToLower().Contains(keyWord))
+                            .ToListAsync();
         }
     }
 }
