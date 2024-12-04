@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TestTask.Data;
+using TestTask.Services.Implementations;
+using TestTask.Services.Interfaces;
 
 namespace TestTask
 {
@@ -12,6 +14,9 @@ namespace TestTask
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddTransient<IAuthorService, AuthorService>();
+            builder.Services.AddTransient<IBookService, BookService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
