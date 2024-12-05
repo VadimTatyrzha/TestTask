@@ -14,18 +14,17 @@ namespace TestTask.Services.Implementations
         }
         public async Task<Author> GetAuthor()
         {
-            return await _context.Authors
+            return await _context.Authors.Include(b => b.Books)
                             .OrderByDescending(a => a.Books.Max(b => b.Title.Length))
-                            //.OrderByDescending(a => a.Id)
+                            .ThenBy(a => a.Id)
                             .FirstOrDefaultAsync();
         }
         public async Task<List<Author>> GetAuthors()
         {
-            var minPublishDate = new DateTime(2016, 01, 01);
-            return await _context.Authors
-                            .Where(a => a.Books.Count % 2 != 0 && 
-                                        a.Books.All(b => b.PublishDate >= minPublishDate) &&
-                                        a.Books != null)
+            var minPublishDate = new DateTime(2015);
+            return await _context.Authors.Include(a => a.Books)
+                            .Where(a => a.Books.Count % 2 == 0 &&
+                                        a.Books.Any(b => b.PublishDate >= minPublishDate))
                             .ToListAsync();
         }
     }
